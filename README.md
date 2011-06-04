@@ -1,9 +1,10 @@
 # Noah cookbook
 ================
-This cookbook has **NOT** been tested. I'm just getting it up on Github as I go along.
-Eventually, it will support both Redhat and Debian flavored distros.
+This cookbook has been tested on the following platforms:
+* Natty 32-bit Rubygems install
+* Natty 64-bit Rubygems install
 
-Right now, only the debian-related stuff is really stubbed out. Init script templates for redhat need to be written.
+Right now, only the ubuntu-related stuff is really stubbed out. Init script templates for redhat and non-upstart debian need to be written.
 
 If you want to test it, the recipe you want is `noah::server`.
 
