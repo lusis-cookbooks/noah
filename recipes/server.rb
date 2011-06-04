@@ -36,6 +36,7 @@ end
 
 remote_file "/tmp/noah-redis.tar.gz" do
   source "http://redis.googlecode.com/files/redis-#{node['noah']['redis_version']}.tar.gz"
+  mode "0644"
   #notifies :run, "execute[build_redis]", :immediately
 end
 
@@ -44,7 +45,7 @@ user "#{node['noah']['user']}" do
   home "#{node['noah']['home']}"
   shell "/bin/bash"
   system true
-  support :manage_home => true
+  supports :manage_home => true
   action [:create, :modify, :manage]
 end
 
@@ -69,6 +70,7 @@ script "build_redis" do
   cd #{node['noah']['home']}/redis/redis-#{node['noah']['redis_version']}
   make
   EOH
+  not_if "test -f #{node['noah']['home']}/redis/redis-#{node['noah']['redis_version']}/src/redis-server"
 end
 
 link "#{node['noah']['home']}/redis/current" do
@@ -90,14 +92,14 @@ template "#{node['noah']['home']}/etc/redis.conf" do
 end
 
 case node.platform
-when "debian","ubuntu"
-  template "/etc/init/noah-redis" do
+when "ubuntu"
+  template "/etc/init/noah-redis.conf" do
     action :create
     source "noah-redis-upstart.erb"
     variables({:noah_user => node['noah']['user'],
               :noah_home => node['noah']['home']})
   end
-  template "/etc/init/noah" do
+  template "/etc/init/noah.conf" do
     action :create
     source "noah-upstart.erb"
     variables({:noah_user => node['noah']['user'],
@@ -105,6 +107,17 @@ when "debian","ubuntu"
                :noah_home => node['noah']['home'],
                :redis_port => node['noah']['redis_port'],
                :log_dir => node['noah']['logdir']})
+  end
+  service "noah-redis" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true
+    action [ :enable, :start ]
+  end
+
+  service "noah" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true
+    action [ :enable, :start ]
   end
 when "redhat","centos","fedora"
   template "/etc/init.d/noah-redis" do
@@ -115,14 +128,4 @@ when "redhat","centos","fedora"
     action :create
     source "noah-init.erb"
   end
-end
-
-service "noah-redis" do
-  supports :status => true, :restart => true
-  action [ :enable, :start ]
-end
-
-service "noah" do
-  supports :status => true, :restart => true
-  action [ :enable, :start ]
 end
