@@ -1,6 +1,7 @@
 # Noah cookbook
 ================
 This cookbook has been tested on the following platforms:
+
 * Natty 32-bit Rubygems install
 * Natty 64-bit Rubygems install
 
