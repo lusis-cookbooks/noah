@@ -1,0 +1,8 @@
+description "noah-redis"
+
+start on runlevel [23]
+stop on shutdown
+
+exec sudo -u <%= @noah_user %> <%= @noah_home %>/bin/redis-server <%= @noah_home %>/etc/redis.conf
+
+respawn

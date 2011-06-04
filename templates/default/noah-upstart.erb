@@ -1,0 +1,8 @@
+description "noah"
+
+start on runlevel [23]
+stop on shutdown
+
+exec sudo -u <%= @noah_user %> -s thin -e production -F -p <%= @noah_port %> -L -P <%= @noah_home %>/data/noah.pid --log-file <%= @log_dir %>/noah.log -r redis://localhost:<%= @redis_port %>/0
+
+respawn
