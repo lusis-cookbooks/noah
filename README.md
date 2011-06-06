@@ -86,3 +86,7 @@ The exception to a `:pass` is when the data doesn't match. It makes no sense to 
 # Test Suite
 There's a small "test suite" of recipes included. If you include `noah::test` in your run\_list, it will perform a series of tests that ensure some basic functionality. The last test to run is for `noah_block` and it's designed to test proper failure. This test suite will fail intentionally at the end if everything is working properly.
 
+# TODO
+- The whole 'who the hell is my Noah server?' needs to be allowed to be based of a role.
+- DRY the code out.
+- ??????????
