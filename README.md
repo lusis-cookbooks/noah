@@ -12,7 +12,6 @@ If you want to test it, the recipe you want is `noah::server`.
 This will install Noah from rubygems, compile redis from source into a self-contained directory and then create two startup scripts - noah-redis and noah.
 
 ## Server Attributes
-==================================
 You can see the exposed attributes but the key server ones are:
 
 - redis\_version
@@ -22,7 +21,6 @@ You can see the exposed attributes but the key server ones are:
 If you're okay with it, the default install dir for everything is /var/lib/noah.
 
 ## Client Attributes
-==================================
 Client attributes are a bit different in how they operate based on the resource you're using
 
 - `timeout`
@@ -34,14 +32,12 @@ Client attributes are a bit different in how they operate based on the resource 
 You can read more about what happens with each specific resource below.
 
 ## Just the LWRP
-=================
 If you just want to use the LWRP, all you need to do is add `noah::default` as a dependency to your cookbook and include the recipe. This also provides additional methods in your cookbook:
 
 - `noah_get`
 - `noah_search`
 
 # Resources
-============
 The following resources are exposed by the LWRP:
 
 - `noah_application` - no custom parameters
@@ -68,8 +64,7 @@ Additionally, two new methods are available that you can call to lookup informat
 `noah_get` takes a full URL to a Noah resource and converts the JSON result to a ruby hash. The response is unaltered beyond that. If the response cannot be converted, it assumed to be an ephemeral and served "raw".
 `noah_search` takes a Noah object type and an string. This is not a "real" search. It simply grabs all objects of the given type and looks for keys that contain the provided string. It is not a replacement for Chef's built in search.
 
-## `noah_block`
-===============
+## Blocking
 `noah_block` is a special resource best used for coordinating interaction between client bootstraps. Imaging a use case where a load balancer needs to know all of the application servers. Until those application servers have bootstrapped fully, they will not be available as search results. Using Ephemerals (for now), `noah_block` allows you to "block" a portion of a chef-client run until some data is available in Noah. Using the `on_failure` attribute, you can either `:pass`, `:retry` or `:fail` based on the results of Noah query.
 
 Take the following example:
@@ -89,6 +84,5 @@ The exception to a `:pass` is when the data doesn't match. It makes no sense to 
 **All `noah_block` resource will retry, the `on_failure` guard is to determine how to respond to an error**
 
 # Test Suite
-=============
 There's a small "test suite" of recipes included. If you include `noah::test` in your run\_list, it will perform a series of tests that ensure some basic functionality. The last test to run is for `noah_block` and it's designed to test proper failure. This test suite will fail intentionally at the end if everything is working properly.
 
