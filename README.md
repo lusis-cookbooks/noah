@@ -14,9 +14,9 @@ This will install Noah from rubygems, compile redis from source into a self-cont
 ## Server Attributes
 You can see the exposed attributes but the key server ones are:
 
-- redis\_version
-- redis\_port
-- noah\_port
+- `redis_version`
+- `redis_port`
+- `noah_port`
 
 If you're okay with it, the default install dir for everything is /var/lib/noah.
 
