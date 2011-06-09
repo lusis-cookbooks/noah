@@ -24,15 +24,19 @@ when "redhat","centos","fedora"
 end
 
 prereqs.each do |prereq|
-  package prereq do
-    action :install
+  p = package prereq do
+    action :nothing
   end
+  p.run_action(:install)
 end
 
-gem_package "noah" do
-  action :install
+g = gem_package "noah" do
+  action :nothing
   version "#{node['noah']['version']}"
 end
+g.run_action(:install)
+Gem.clear_paths
+noah_bin = Gem.bin_path('noah','noah',"#{node['noah']['version']}")
 
 remote_file "/tmp/noah-redis.tar.gz" do
   source "http://redis.googlecode.com/files/redis-#{node['noah']['redis_version']}.tar.gz"
@@ -88,7 +92,8 @@ template "#{node['noah']['home']}/etc/redis.conf" do
   source "redis.conf.erb"
   variables({:redis_port => node['noah']['redis_port'],
              :log_dir => node['noah']['logdir'],
-             :noah_home => node['noah']['home']})
+             :noah_home => node['noah']['home'],
+             :noah_exe => noah_bin})
 end
 
 case node.platform
@@ -106,7 +111,8 @@ when "ubuntu"
                :noah_port => node['noah']['port'],
                :noah_home => node['noah']['home'],
                :redis_port => node['noah']['redis_port'],
-               :log_dir => node['noah']['logdir']})
+               :log_dir => node['noah']['logdir'],
+               :bin_path => noah_bin})
   end
   service "noah-redis" do
     provider Chef::Provider::Service::Upstart
