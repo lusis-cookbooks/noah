@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: noah
-# Recipe:: client
+# Recipe:: server
 #
 # Copyright 2010, John E. Vincent <lusis.org+github.com@gmail.com>
 #
@@ -16,6 +16,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 include_recipe "noah::default"
-noah_server = search(:node,"role:noah_server").first
-node.set['noah']['client']['noah_host'] = noah_server["ipaddress"]
-node.set['noah']['client']['noah_host'] = noah_server["noah"]["port"]
+noah_host "#{node.name}"
+noah_ephemeral "/chef/#{node.name}"

@@ -15,6 +15,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+include_recipe "noah::default"
 
 case node.platform
 when "debian","ubuntu"
@@ -134,4 +135,11 @@ when "redhat","centos","fedora"
     action :create
     source "noah-init.erb"
   end
+end
+
+# register ourself with noah
+noah_application "noah"
+noah_host "#{node.name}"
+noah_service "noah" do
+  host "#{node.name}"
 end
