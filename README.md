@@ -15,6 +15,21 @@ If you want to test it, the recipe you want is `noah::server`.
 
 This will install Noah from rubygems, compile redis from source into a self-contained directory and then create two startup scripts - noah-redis and noah.
 
+# Recipes
+
+- `noah::default`: provides the Noah LWRP
+- `noah::server`: Installs a Noah server
+- `noah::client`: For use with Chef Server. Searches for local Noah server and sets default attributes for clients.
+- `noah::register`: Registers the current node in Noah both as a `Host` primitive and an `Ephemeral` record under `/chef/node_name`
+
+## Client usage
+If you are running with a Chef server, the best option is to use `noah::client` as the first recipe in your role/run\_list and `noah::register` as the last recipe in your role/run\_list
+
+## Search Attribute
+A single attribute is exposed for use in search. By assigning a node with this role, clients can find the local Noah server.
+
+- `server_role`
+
 ## Server Attributes
 You can see the exposed attributes but the key server ones are:
 
@@ -91,6 +106,5 @@ The exception to a `:pass` is when the data doesn't match. It makes no sense to 
 There's a small "test suite" of recipes included. If you include `noah::test` in your run\_list, it will perform a series of tests that ensure some basic functionality. The last test to run is for `noah_block` and it's designed to test proper failure. This test suite will fail intentionally at the end if everything is working properly.
 
 # TODO
-- The whole 'who the hell is my Noah server?' needs to be allowed to be based of a role.
 - DRY the code out.
 - ??????????
