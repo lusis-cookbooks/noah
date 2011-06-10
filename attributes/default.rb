@@ -1,3 +1,7 @@
+# role for search
+default['noah']['server_role'] = 'noah_server'
+
+# server options
 default['noah']['redis_version'] = '2.2.4'
 default['noah']['redis_port'] = 6381
 default['noah']['port'] = 5678
