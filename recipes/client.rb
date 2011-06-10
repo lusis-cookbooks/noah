@@ -17,5 +17,7 @@
 # limitations under the License.
 include_recipe "noah::default"
 noah_server = search(:node,"role:noah_server").first
+Chef::Log.info("Noah Server found: #{noah_server}") 
 node.set['noah']['client']['noah_host'] = noah_server["ipaddress"]
-node.set['noah']['client']['noah_host'] = noah_server["noah"]["port"]
+node.set['noah']['client']['noah_port'] = noah_server["noah"]["port"]
+node.save

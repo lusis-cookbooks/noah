@@ -71,7 +71,7 @@ def wait_for_result
   when "200"
     Chef::Log.info("Resource path found.")
     check_result(resp.body) if new_resource.data
-    Chef::Log.debug("Resource ready. Continuing")
+    Chef::Log.info("Resource ready. Continuing")
   else
     Chef::Application.fatal!("Noah server returned an unknown status (#{resp.code}): #{resp.body}")
   end

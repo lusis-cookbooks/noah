@@ -1,4 +1,6 @@
-daemonize no
+<% @init_sys == "upstart" ? @daemonize="no" : @daemonize="yes" %>
+daemonize <%= @daemonize %>
+
 pidfile <%= @noah_home %>/data/redis.pid
 port <%= @redis_port %>
 # bind 127.0.0.1

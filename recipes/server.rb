@@ -86,6 +86,11 @@ link "#{node['noah']['home']}/bin/redis-server" do
   to "#{node['noah']['home']}/redis/current/src/redis-server"
 end
 
+case node.platform
+when "ubuntu"
+  init_sys = "upstart"
+end
+
 template "#{node['noah']['home']}/etc/redis.conf" do
   mode "0640"
   owner "noah"
@@ -94,6 +99,7 @@ template "#{node['noah']['home']}/etc/redis.conf" do
   variables({:redis_port => node['noah']['redis_port'],
              :log_dir => node['noah']['logdir'],
              :noah_home => node['noah']['home'],
+             :init_sys => init_sys,
              :noah_exe => noah_bin})
 end
 
